@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="ParentPane" prefHeight="555.0" prefWidth="706.0" styleClass="rootPane" stylesheets="@../stylesheet/mainLightmode.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.mainController">
+    <children>
+        <AnchorPane layoutX="245.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="442.0" styleClass="rightPane" stylesheets="@../stylesheet/mainLightmode.css">
+            <children>
+                <Label layoutX="47.0" layoutY="95.0" text="Tiếng Anh">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="NW_RESIZE" />
+                    </cursor>
+                </Label>
+                <Button fx:id="buttonSearch" layoutX="279.0" layoutY="35.0" mnemonicParsing="false" onAction="#lookUp" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Tìm kiếm">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+                <TextField fx:id="SearchText" layoutX="46.0" layoutY="35.0" onAction="#lookUp" onKeyReleased="#showAllWord" prefHeight="35.0" prefWidth="222.0" promptText="Bạn muốn tìm gì?" style="-fx-background-radius: 16;" styleClass="textfield1" stylesheets="@../stylesheet/mainLightmode.css">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></TextField>
+                <Button fx:id="buttonAdd" alignment="TOP_LEFT" layoutX="46.0" layoutY="369.0" mnemonicParsing="false" onAction="#addWord" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Thêm từ">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/edit_diy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+                <Button fx:id="buttonDel" alignment="TOP_LEFT" layoutX="278.0" layoutY="259.0" mnemonicParsing="false" onAction="#deletelWord" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Xoá từ">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/delete_diy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+                <TextField fx:id="EText" layoutX="47.0" layoutY="121.0" prefHeight="40.0" prefWidth="345.0" style="-fx-background-radius: 17;" styleClass="textfield2" stylesheets="@../stylesheet/mainLightmode.css">
+                    <font>
+                        <Font name="Segoe UI Historic" size="14.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="VText" layoutX="47.0" layoutY="193.0" prefHeight="40.0" prefWidth="345.0" style="-fx-background-radius: 17;" styleClass="textfield2" stylesheets="@../stylesheet/mainLightmode.css">
+                    <font>
+                        <Font name="Segoe UI Historic" size="14.0" />
+                    </font>
+                </TextField>
+                <Label layoutX="46.0" layoutY="169.0" text="Tiếng Việt">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Button fx:id="buttonSave" alignment="TOP_LEFT" layoutX="278.0" layoutY="312.0" mnemonicParsing="false" onAction="#saveFile" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Lưu">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/save_diy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+                <TextField fx:id="StatusText" layoutX="47.0" layoutY="430.0" prefHeight="40.0" prefWidth="345.0" style="-fx-background-radius: 17;" styleClass="textfield2" stylesheets="@../stylesheet/mainLightmode.css">
+                    <font>
+                        <Font name="Segoe UI Historic" size="14.0" />
+                    </font>
+                </TextField>
+                <GridPane layoutX="-624.0" layoutY="65.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <Button fx:id="Speech" alignment="TOP_LEFT" layoutX="46.0" layoutY="259.0" mnemonicParsing="false" onAction="#pronounce_E" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Phát âm">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/speaker.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+                <Button fx:id="buttonReset" alignment="TOP_LEFT" layoutX="278.0" layoutY="367.0" mnemonicParsing="false" onAction="#reset" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Reset">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/reset.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+                <Button fx:id="buttonFix" alignment="TOP_LEFT" layoutX="46.0" layoutY="314.0" mnemonicParsing="false" onAction="#modifyWord" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Sửa từ">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                </Button>
+            </children>
+        </AnchorPane>
+            <Pane fx:id="titlePane" layoutX="-4.0" layoutY="-1.0" onMouseDragged="#draged" onMousePressed="#pressed" prefHeight="44.0" prefWidth="722.0" stylesheets="@../stylesheet/mainLightmode.css">
+            <children>
+              <Label layoutX="61.0" layoutY="8.0" prefHeight="17.0" prefWidth="126.0" text="Dictionary" textFill="#c3465d">
+                  <font>
+                      <Font name="System Bold" size="18.0" />
+                  </font>
+              </Label>
+              <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="23.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../resource/teebee-removebg.png" />
+                  </image>
+              </ImageView>
+                <FontAwesomeIconView fill="#c3465d" glyphName="MINUS" layoutX="646.0" layoutY="24.0" onMouseClicked="#minimize" size="20" />
+                <FontAwesomeIconView fill="#c3465d" glyphName="CLOSE" layoutX="673.0" layoutY="23.0" onMouseClicked="#close" size="20" />
+            <Button fx:id="changemode" layoutX="575.0" layoutY="3.0" mnemonicParsing="false" onAction="#switchTheme" prefHeight="27.0" prefWidth="58.0" style="-fx-background-color: none;">
+               <graphic>
+                  <ImageView fx:id="imageMode" fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resource/lightmode.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            </children>
+      </Pane>
+          <ListView fx:id="listView" layoutX="21.0" layoutY="44.0" onMouseClicked="#getMeaning" prefHeight="490.0" prefWidth="200.0" stylesheets="@../stylesheet/mainLightmode.css" />
+    </children>
+</Pane>
