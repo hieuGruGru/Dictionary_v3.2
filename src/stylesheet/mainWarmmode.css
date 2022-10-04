@@ -11,24 +11,24 @@
     -fx-background-radius: 15;
 }
 .textfield1{
-      -fx-prompt-text-fill: #434343;
-      -fx-background-color: #F7ECDE;
+    -fx-prompt-text-fill: #434343;
+    -fx-background-color: #F7ECDE;
+    -fx-text-fill: black;
 
 }
 .textfield2{
-      -fx-background-color: #F7ECDE;
+    -fx-background-color: #F7ECDE;
+    -fx-text-fill: black;
 }
 .button1{
--fx-background-color: #F7ECDE;
+    -fx-background-color: #F7ECDE;
+    -fx-text-fill: black;
 }
 .button1:hover{
--fx-text-fill: #F29393;
+    -fx-text-fill: #F29393;
 }
-.button2{
--fx-background-color: #8bc1cc
-}
-.button2:hover{
--fx-text-fill: whitesmoke;
+.label{
+    -fx-text-fill: black;
 }
 .list-view {
     -fx-background-color: #F7ECDE;

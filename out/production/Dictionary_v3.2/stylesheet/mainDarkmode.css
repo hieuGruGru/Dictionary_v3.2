@@ -11,23 +11,22 @@
     -fx-background-radius: 15;
 }
 .textfield1{
-      -fx-prompt-text-fill: #434343;
-      -fx-background-color: #8bc1cc;
+    -fx-prompt-text-fill: white;
+    -fx-background-color: #5F6F94;
+    -fx-text-fill: white;
 }
 .textfield2{
-      -fx-background-color: #8bc1cc;
+    -fx-background-color: #5F6F94;
+    -fx-text-fill: white;
 }
 .button1{
--fx-background-color: #8bc1cc;
+    -fx-background-color: #5F6F94;
 }
 .button1:hover{
--fx-text-fill: whitesmoke;
+    -fx-text-fill: whitesmoke;
 }
-.button2{
--fx-background-color: #8bc1cc
-}
-.button2:hover{
--fx-text-fill: whitesmoke;
+.label{
+    -fx-text-fill: white;
 }
 .list-view {
     -fx-background-color: #232323;
