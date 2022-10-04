@@ -93,15 +93,7 @@ public class mainController implements Initializable {
         stage.setIconified(true);
     }
 
-    public void logOut(ActionEvent actionEvent) throws IOException {
-        Parent logout = FXMLLoader.load(getClass().getResource("Option.fxml"));
-        stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(logout);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void getMode(int mode) {
+    public void setMode(int mode) {
         modeTheme = mode;
         if(modeTheme == 1) {
             ParentPane.getStylesheets().add("stylesheet/mainLightmode.css");
@@ -126,7 +118,6 @@ public class mainController implements Initializable {
         DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,DictionaryManagement.dictionary.list1);
         showList(listView, DictionaryManagement.dictionary.list1);
     }
-
 
     public void lookUp(ActionEvent event) throws IllegalAccessException {
         if (!SearchText.getText().isEmpty()) {
@@ -179,7 +170,6 @@ public class mainController implements Initializable {
         confirmAlert.setTitle("Wait a minute");
         confirmAlert.setHeaderText("Bạn có chắc muốn xóa từ " + word + " khỏi từ điển?");
         confirmAlert.setContentText("");
-
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.get() == ButtonType.OK) {
             listView.getItems().remove(index);
@@ -199,10 +189,18 @@ public class mainController implements Initializable {
     public void reset(ActionEvent event) {
     }
 
+    public void logOut(ActionEvent actionEvent) throws IOException {
+        Parent logout = FXMLLoader.load(getClass().getResource("Option.fxml"));
+        stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(logout);
+        stage.setScene(scene);
+        stage.show();
+        DictionaryManagement.clear();
+    }
+
     public void showList(ListView listView, ArrayList list) {
         for (int i = 0; i < list.size(); i++) {
             listView.getItems().add(list.get(i));
         }
     }
-
 }

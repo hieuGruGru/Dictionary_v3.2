@@ -2,12 +2,15 @@
     -fx-background-color: #E9DAC1;
 }
 .bigPane{
-         -fx-background-color: linear-gradient(to bottom right, #FFC090, #FF9494);
+    -fx-background-color: linear-gradient(to bottom right, #FF9494, #FFC090);
 }
 .JFXbutton{
-    -fx-text-fill:   black;
+    -fx-text-fill: black;
 }
 .button1{
-    -fx-background-color:   #E9DAC1;
-    -fx-text-fill:   black;
+    -fx-background-color: m#E9DAC1;
+    -fx-text-fill: black;
+}
+.label{
+    -fx-text-fill: black;
 }

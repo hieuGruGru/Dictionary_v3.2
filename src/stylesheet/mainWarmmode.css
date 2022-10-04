@@ -3,7 +3,7 @@
     -fx-background-radius: 15;
 }
 .rightPane{
-     -fx-background-color: linear-gradient(to bottom right, #FFC090, #FF9494);
+     -fx-background-color: linear-gradient(to bottom right, #FF9494, #B73E3E);
      -fx-background-radius: 15;
   }
 .leftPane{

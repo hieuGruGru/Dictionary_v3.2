@@ -109,4 +109,7 @@ public class DictionaryManagement {
         }
     }
 
+    public static void clear() {
+        DictionaryManagement.dictionary = new Dictionary();
+    }
 }

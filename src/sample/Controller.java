@@ -1,6 +1,5 @@
 package sample;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,12 +34,6 @@ public class Controller implements Initializable {
     Pane contentArea;
     @FXML
     Button logIn;
-    @FXML
-    Button mode1;
-    @FXML
-    Button mode2;
-    @FXML
-    Button mode3;
     @FXML
     Button logOut;
     @FXML
@@ -82,15 +75,6 @@ public class Controller implements Initializable {
         stage.setIconified(true);
     }
 
-    public void changeScene(ActionEvent actionEvent) throws IOException {
-        Parent login = FXMLLoader.load(getClass().getResource("mainSample.fxml"));
-        stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(login);
-        scene.setFill(Color.TRANSPARENT);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public void login(ActionEvent actionEvent) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -122,23 +106,18 @@ public class Controller implements Initializable {
     }
 
     public void Next(ActionEvent actionEvent) throws IOException {
-        Parent next = setMainTheme(actionEvent);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainSample.fxml"));
+        Parent mainNode = loader.load();
+        mainController mainController = loader.getController();
+        mainController.setMode(mode.mode);
         stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
-        scene = new Scene(next);
+        scene = new Scene(mainNode);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
     }
     public void setMode(int mod3, Mode mode) {
         mode.mode = mod3;
-    }
-
-    public Parent setMainTheme(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainSample.fxml"));
-        Parent root = loader.load();
-        mainController mainController = loader.getController();
-        mainController.getMode(mode.mode);
-        return root;
     }
 
     public void switchLightTheme(ActionEvent actionEvent) throws IOException {
@@ -148,7 +127,7 @@ public class Controller implements Initializable {
         Image lightmode = new Image("resource/Option_lighttheme.png");
         ImageMode.setImage(lightmode);
         setMode(1, mode);
-        setMainTheme(actionEvent);
+
     }
 
     public void switchWarmTheme(ActionEvent actionEvent) throws IOException {
@@ -158,7 +137,7 @@ public class Controller implements Initializable {
         Image warmmode = new Image("resource/Option_warmtheme.png");
         ImageMode.setImage(warmmode);
         setMode(2, mode);
-        setMainTheme(actionEvent);
+
     }
 
     public void switchDarkTheme(ActionEvent actionEvent) throws IOException {
@@ -168,7 +147,7 @@ public class Controller implements Initializable {
         Image darkmode = new Image("resource/Option_darktheme.png");
         ImageMode.setImage(darkmode);
         setMode(3, mode);
-        setMainTheme(actionEvent);
+
     }
 
     public void EToV(ActionEvent actionEvent) {
@@ -179,4 +158,11 @@ public class Controller implements Initializable {
 
     }
 
+    public void changeVoice1(ActionEvent actionEvent) {
+
+    }
+
+    public void changeVoice2(ActionEvent actionEvent) {
+
+    }
 }
