@@ -1,5 +1,6 @@
 package sample;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -18,11 +23,10 @@ import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    private static Stage stage;
+    private static Scene scene;
     private double x,y;
-    private int mode = 0;
+    Mode mode = new Mode(0);
     @FXML
     Pane titledPane;
     @FXML
@@ -32,13 +36,24 @@ public class Controller implements Initializable {
     @FXML
     Button logIn;
     @FXML
-    Button theme1;
+    Button mode1;
     @FXML
-    Button theme2;
+    Button mode2;
+    @FXML
+    Button mode3;
     @FXML
     Button logOut;
     @FXML
     Button next;
+    @FXML
+    TextField usernameField = new TextField();
+    @FXML
+    TextField notification = new TextField();
+    @FXML
+    PasswordField passwordField;
+    @FXML
+    ImageView ImageMode;
+
 
 
     @Override
@@ -67,13 +82,35 @@ public class Controller implements Initializable {
         stage.setIconified(true);
     }
 
-    public void logIn(ActionEvent actionEvent) throws IOException {
+    public void changeScene(ActionEvent actionEvent) throws IOException {
         Parent login = FXMLLoader.load(getClass().getResource("mainSample.fxml"));
         stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(login);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void login(ActionEvent actionEvent) throws IOException {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        int flag = ConnectToSQLServer.login(username, password);
+        if (flag == 2) {
+            Parent login = FXMLLoader.load(getClass().getResource("Option.fxml"));
+            stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(login);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            if (flag == 1) {
+                notification.setText("Mật khẩu không chính xác");
+            } else {
+                notification.setText("Tên đăng nhập không chính xác");
+            }
+        }
+        usernameField.clear();
+        passwordField.clear();
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
@@ -85,22 +122,61 @@ public class Controller implements Initializable {
     }
 
     public void Next(ActionEvent actionEvent) throws IOException {
-        Parent next = FXMLLoader.load(getClass().getResource("mainSample.fxml"));
+        Parent next = setMainTheme(actionEvent);
         stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(next);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
     }
-
-    public void switchTheme1(ActionEvent actionEvent) throws IOException {
-        ParentPane.getStylesheets().add("stylesheet/darkmode.css");
-        ParentPane.getStylesheets().remove("stylesheet/lightmode.css");
+    public void setMode(int mod3, Mode mode) {
+        mode.mode = mod3;
     }
 
-    public void switchTheme2(ActionEvent actionEvent) throws IOException {
+    public Parent setMainTheme(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainSample.fxml"));
+        Parent root = loader.load();
+        mainController mainController = loader.getController();
+        mainController.getMode(mode.mode);
+        return root;
+    }
+
+    public void switchLightTheme(ActionEvent actionEvent) throws IOException {
         ParentPane.getStylesheets().add("stylesheet/lightmode.css");
         ParentPane.getStylesheets().remove("stylesheet/darkmode.css");
+        ParentPane.getStylesheets().remove("stylesheet/warmmode.css");
+        Image lightmode = new Image("resource/Option_lighttheme.png");
+        ImageMode.setImage(lightmode);
+        setMode(1, mode);
+        setMainTheme(actionEvent);
+    }
+
+    public void switchWarmTheme(ActionEvent actionEvent) throws IOException {
+        ParentPane.getStylesheets().add("stylesheet/warmmode.css");
+        ParentPane.getStylesheets().remove("stylesheet/lightmode.css");
+        ParentPane.getStylesheets().remove("stylesheet/darkmode.css");
+        Image warmmode = new Image("resource/Option_warmtheme.png");
+        ImageMode.setImage(warmmode);
+        setMode(2, mode);
+        setMainTheme(actionEvent);
+    }
+
+    public void switchDarkTheme(ActionEvent actionEvent) throws IOException {
+        ParentPane.getStylesheets().add("stylesheet/darkmode.css");
+        ParentPane.getStylesheets().remove("stylesheet/lightmode.css");
+        ParentPane.getStylesheets().remove("stylesheet/warmmode.css");
+        Image darkmode = new Image("resource/Option_darktheme.png");
+        ImageMode.setImage(darkmode);
+        setMode(3, mode);
+        setMainTheme(actionEvent);
+    }
+
+    public void EToV(ActionEvent actionEvent) {
+
+    }
+
+    public void VToE(ActionEvent actionEvent){
+
     }
 
 }

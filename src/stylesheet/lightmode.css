@@ -1,14 +1,15 @@
 .rootPane{
-    -fx-background-color: #dff6ff;
+    -fx-background-color: #CBF1F5;
 }
 .bigPane{
-    -fx-background-color:  #FFD6EC;
+     -fx-background-color: linear-gradient(to bottom right, #73A9AD, #90C8AC);
 }
 .JFXbutton{
-    -fx-text-fill:   #31C6D4;
+    -fx-text-fill:   black;
 }
 .button1{
     -fx-background-color:   #dff6ff;
-    -fx-text-fill:   #31C6D4;
+    -fx-text-fill:   black;
 }
+
 

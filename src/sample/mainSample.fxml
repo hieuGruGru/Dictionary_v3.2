@@ -119,7 +119,7 @@
                   </ImageView>
                </graphic>
                 </Button>
-                <Button fx:id="buttonReset" alignment="TOP_LEFT" layoutX="278.0" layoutY="367.0" mnemonicParsing="false" onAction="#reset" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Reset">
+                <Button fx:id="buttonReset" alignment="TOP_LEFT" layoutX="278.0" layoutY="367.0" mnemonicParsing="false" onAction="#logOut" prefHeight="35.0" prefWidth="115.0" style="-fx-background-radius: 15;" styleClass="button1" stylesheets="@../stylesheet/mainLightmode.css" text="Cài đặt">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -159,14 +159,6 @@
               </ImageView>
                 <FontAwesomeIconView fill="#c3465d" glyphName="MINUS" layoutX="646.0" layoutY="24.0" onMouseClicked="#minimize" size="20" />
                 <FontAwesomeIconView fill="#c3465d" glyphName="CLOSE" layoutX="673.0" layoutY="23.0" onMouseClicked="#close" size="20" />
-            <Button fx:id="changemode" layoutX="575.0" layoutY="3.0" mnemonicParsing="false" onAction="#switchTheme" prefHeight="27.0" prefWidth="58.0" style="-fx-background-color: none;">
-               <graphic>
-                  <ImageView fx:id="imageMode" fitHeight="20.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../resource/lightmode.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
             </children>
       </Pane>
           <ListView fx:id="listView" layoutX="21.0" layoutY="44.0" onMouseClicked="#getMeaning" prefHeight="490.0" prefWidth="200.0" stylesheets="@../stylesheet/mainLightmode.css" />

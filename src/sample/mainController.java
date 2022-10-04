@@ -2,8 +2,11 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +24,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class mainController implements Initializable {
+    Stage stage;
+    Scene scene;
     @FXML
     public Pane ParentPane;
     @FXML
@@ -49,14 +54,11 @@ public class mainController implements Initializable {
     Button Speech;
     @FXML
     Button buttonReset;
-    @FXML
-    ImageView imageMode;
 
     private Trie newTrie = new Trie();
     private double x, y;
-    private double mode = 0;
+    private int modeTheme = 0;
     Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -91,26 +93,28 @@ public class mainController implements Initializable {
         stage.setIconified(true);
     }
 
-    public void switchTheme(ActionEvent actionEvent) throws IOException {
-        if(mode == 0) {
+    public void logOut(ActionEvent actionEvent) throws IOException {
+        Parent logout = FXMLLoader.load(getClass().getResource("Option.fxml"));
+        stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+        scene = new Scene(logout);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void getMode(int mode) {
+        modeTheme = mode;
+        if(modeTheme == 1) {
             ParentPane.getStylesheets().add("stylesheet/mainLightmode.css");
             ParentPane.getStylesheets().remove("stylesheet/mainDarkmode.css");
-            Image lightmode = new Image("resource/lightmode.png");
-            imageMode.setImage(lightmode);
-            mode = 1;
         } else {
-            if (mode == 1) {
+            if (modeTheme == 2) {
                 ParentPane.getStylesheets().add("stylesheet/mainWarmmode.css");
                 ParentPane.getStylesheets().remove("stylesheet/mainLightmode.css");
-                Image warmmode = new Image("resource/warmmode.png");
-                imageMode.setImage(warmmode);
-                mode = 2;
             } else {
-                ParentPane.getStylesheets().add("stylesheet/mainDarkmode.css");
-                ParentPane.getStylesheets().remove("stylesheet/mainWarmmode.css");
-                Image darkmode = new Image("resource/darkmode.png");
-                imageMode.setImage(darkmode);
-                mode = 0;
+                if (modeTheme == 3) {
+                    ParentPane.getStylesheets().add("stylesheet/mainDarkmode.css");
+                    ParentPane.getStylesheets().remove("stylesheet/mainWarmmode.css");
+                }
             }
         }
     }
