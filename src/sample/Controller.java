@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -25,7 +26,8 @@ public class Controller implements Initializable {
     private static Stage stage;
     private static Scene scene;
     private double x,y;
-    Mode mode = new Mode(0);
+    Mode themeMode = new Mode(0);
+    Mode languageMode = new Mode(1);
     @FXML
     Pane titledPane;
     @FXML
@@ -46,6 +48,8 @@ public class Controller implements Initializable {
     PasswordField passwordField;
     @FXML
     ImageView ImageMode;
+    @FXML
+    Label languageLabel;
 
 
 
@@ -109,15 +113,25 @@ public class Controller implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mainSample.fxml"));
         Parent mainNode = loader.load();
         mainController mainController = loader.getController();
-        mainController.setMode(mode.mode);
         stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(mainNode);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
+        mainController.init(stage, themeMode.mode, languageMode.mode);
         stage.show();
     }
     public void setMode(int mod3, Mode mode) {
         mode.mode = mod3;
+    }
+
+    public void EToV(ActionEvent actionEvent) {
+        setMode(1, languageMode);
+        languageLabel.setText("Tiếng Anh - Tiếng Việt");
+    }
+
+    public void VToE(ActionEvent actionEvent){
+        setMode(2, languageMode);
+        languageLabel.setText("Tiếng Việt - Tiếng Anh");
     }
 
     public void switchLightTheme(ActionEvent actionEvent) throws IOException {
@@ -126,7 +140,7 @@ public class Controller implements Initializable {
         ParentPane.getStylesheets().remove("stylesheet/warmmode.css");
         Image lightmode = new Image("resource/Option_lighttheme.png");
         ImageMode.setImage(lightmode);
-        setMode(1, mode);
+        setMode(1, themeMode);
 
     }
 
@@ -136,7 +150,7 @@ public class Controller implements Initializable {
         ParentPane.getStylesheets().remove("stylesheet/darkmode.css");
         Image warmmode = new Image("resource/Option_warmtheme.png");
         ImageMode.setImage(warmmode);
-        setMode(2, mode);
+        setMode(2, themeMode);
 
     }
 
@@ -146,15 +160,7 @@ public class Controller implements Initializable {
         ParentPane.getStylesheets().remove("stylesheet/warmmode.css");
         Image darkmode = new Image("resource/Option_darktheme.png");
         ImageMode.setImage(darkmode);
-        setMode(3, mode);
-
-    }
-
-    public void EToV(ActionEvent actionEvent) {
-
-    }
-
-    public void VToE(ActionEvent actionEvent){
+        setMode(3, themeMode);
 
     }
 

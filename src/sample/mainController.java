@@ -3,27 +3,21 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class mainController implements Initializable {
+public class mainController {
     Stage stage;
     Scene scene;
     @FXML
@@ -57,13 +51,31 @@ public class mainController implements Initializable {
 
     private Trie newTrie = new Trie();
     private double x, y;
-    private int modeTheme = 0;
     Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    public void init(Stage stage, int themeMode, int languageMode) {
         try {
-            DictionaryManagement.insertFromFile("D:/java/Dictionary/Dictionary_v3.2/src/data/dictionaries.txt");
+            if(themeMode == 1) {//LightTheme
+                ParentPane.getStylesheets().add("stylesheet/mainLightmode.css");
+                ParentPane.getStylesheets().remove("stylesheet/mainDarkmode.css");
+            } else {
+                if (themeMode == 2) {//WarmTheme
+                    ParentPane.getStylesheets().add("stylesheet/mainWarmmode.css");
+                    ParentPane.getStylesheets().remove("stylesheet/mainLightmode.css");
+                } else {
+                    if (themeMode == 3) {//DarkTheme
+                        ParentPane.getStylesheets().add("stylesheet/mainDarkmode.css");
+                        ParentPane.getStylesheets().remove("stylesheet/mainWarmmode.css");
+                    }
+                }
+            }
+
+            if (languageMode == 1) {//E-V
+                DictionaryManagement.insertFromFile("D:/java/Dictionary/Dictionary_v3.2/src/data/1900w_E-V.txt");
+            } else {//V-E
+                DictionaryManagement.insertFromFile("D:/java/Dictionary/Dictionary_v3.2/src/data/1900w_V-E.txt");
+            }
             DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,DictionaryManagement.dictionary.list1);
             showList(listView, DictionaryManagement.dictionary.list1);
         } catch (IOException | IllegalAccessException e) {
@@ -93,24 +105,6 @@ public class mainController implements Initializable {
         stage.setIconified(true);
     }
 
-    public void setMode(int mode) {
-        modeTheme = mode;
-        if(modeTheme == 1) {
-            ParentPane.getStylesheets().add("stylesheet/mainLightmode.css");
-            ParentPane.getStylesheets().remove("stylesheet/mainDarkmode.css");
-        } else {
-            if (modeTheme == 2) {
-                ParentPane.getStylesheets().add("stylesheet/mainWarmmode.css");
-                ParentPane.getStylesheets().remove("stylesheet/mainLightmode.css");
-            } else {
-                if (modeTheme == 3) {
-                    ParentPane.getStylesheets().add("stylesheet/mainDarkmode.css");
-                    ParentPane.getStylesheets().remove("stylesheet/mainWarmmode.css");
-                }
-            }
-        }
-    }
-
     @FXML
     protected void showAllWord(InputEvent inputEvent) {
         DictionaryManagement.dictionary.list1.clear();
@@ -123,8 +117,8 @@ public class mainController implements Initializable {
         if (!SearchText.getText().isEmpty()) {
             listView.getItems().clear();
             DictionaryManagement.dictionary.list2.clear();
-            String EString = SearchText.getText();
-            Trie.TrieNode node = DictionaryManagement.search(EString);
+            String searchString = SearchText.getText();
+            Trie.TrieNode node = DictionaryManagement.search(searchString);
             DictionaryManagement.loadToList(node, DictionaryManagement.dictionary.list2);
             showList(listView, DictionaryManagement.dictionary.list2);
         }
@@ -135,7 +129,8 @@ public class mainController implements Initializable {
     public void getMeaning(MouseEvent event) throws IllegalAccessException {
         String word = listView.getSelectionModel().getSelectedItem();
         EText.setText(word);
-        VText.setText((DictionaryManagement.search(word)).getMeaning());
+        VText.setText((DictionaryManagement.search(word)).getMeaning()
+        );
         StatusText.clear();
     }
 

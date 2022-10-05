@@ -22,6 +22,11 @@
             <FontAwesomeIconView glyphName="FORWARD" layoutX="491.0" layoutY="469.0" size="25" smooth="false" styleClass="icon" />
             <JFXButton fx:id="logOut" layoutX="28.0" layoutY="446.0" onAction="#logOut" prefHeight="30.0" prefWidth="42.0" text=" " />
             <JFXButton fx:id="next" layoutX="479.0" layoutY="445.0" onAction="#Next" prefHeight="33.0" prefWidth="42.0" text=" " />
+            <Label fx:id="languageLabel" alignment="CENTER" layoutX="178.0" layoutY="437.0" prefHeight="50.0" prefWidth="200.0" text="Tiếng Anh - Tiếng Việt">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
          </children></Pane>
       <Pane fx:id="titledPane" layoutY="-2.0" onMouseDragged="#draged" onMousePressed="#pressed" prefHeight="33.0" prefWidth="750.0">
          <children>

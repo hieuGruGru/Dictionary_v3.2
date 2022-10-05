@@ -13,6 +13,8 @@
 .textfield1{
     -fx-prompt-text-fill: #434343;
     -fx-background-color: #F7ECDE;
+    -fx-text-fill: black;
+
 }
 .textfield2{
     -fx-background-color: #F7ECDE;

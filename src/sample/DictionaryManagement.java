@@ -9,39 +9,31 @@ public class DictionaryManagement {
 
     public static Dictionary dictionary = new Dictionary();
 
-    public static void insert(String word, String meaning) throws IllegalAccessException {
-        if (word == null || word.isEmpty()) {
+
+    public static void insert(String target, String meaning) throws IllegalAccessException {
+        if (target == null || target.isEmpty()) {
             throw new IllegalArgumentException("Invalid Input");
         }
-        word = word.toLowerCase();
+        String target_n = Normalize.remove(target);
         Trie.TrieNode current = dictionary.trie.root;
-        for (int i = 0; i < word.length(); i++) {
-            int index = word.charAt(i) - 'a';
+        for (int i = 0; i < target_n.length(); i++) {
+            int index = target_n.charAt(i) - 'a';
             if (current.children[index] == null) {
-                String thisWord = current.word;
                 Trie.TrieNode node = new Trie.TrieNode();
+                String temp = current.target_Normalize;
                 current.children[index] = node;
                 current = node;
-                current.setWord(thisWord + word.charAt(i));
+                current.setTarget_Normalize(temp + target_n.charAt(i));
             } else {
                 current = current.children[index];
             }
         }
-        if(isExist(word,meaning) == 1) {//Nếu là từ mới, chưa có nghĩa isExist = 1
-            current.meaning = meaning;
-        } else {
-            if (isExist(word,meaning) == 2) {//Nếu từ đã có nghĩa, thêm nghĩa khác isExist = 2
-                StringBuilder str = new StringBuilder();
-                str = str.append(current.meaning + ", " + meaning);
-                current.meaning = str.toString();
-            } else {
-                current.meaning = meaning;
-            }
-        }
-        current.endOfWord = true;
+        current.setMeaning(meaning);
+        current.setEndOfWord(true);
+        current.setTarget(target);
     }
 
-     public static void modifyWord(String word, String meaning) {
+    public static void modifyWord(String word, String meaning) {
 
      }
 
@@ -59,15 +51,17 @@ public class DictionaryManagement {
     }
 
     public static Trie.TrieNode search(String word) throws IllegalAccessException {
-        if((word == null || word.isEmpty()) && (isExist(word, "") != 0)) {
+        if (word == null || word.isEmpty()) {
             throw new IllegalArgumentException("Invalid or empty string");
         }
-        word = word.toLowerCase();
+        String target_N = Normalize.remove(word);
         Trie.TrieNode current = dictionary.trie.root;
-        for(int i = 0; i < word.length(); i++) {
-            int index = word.charAt(i) - 'a';
-            if(current.children[index] != null) {
+        for (int i = 0; i < target_N.length(); i++) {
+            int index = target_N.charAt(i) - 'a';
+            if (current.children[index] != null) {
                 current = current.children[index];
+            } else {
+                return null;
             }
         }
         return current;
@@ -77,7 +71,7 @@ public class DictionaryManagement {
         Trie.TrieNode current = node;
         if (current != null) {
             if (current.endOfWord) {
-                list.add(current.getWord());
+                list.add(current.getTarget());
             }
             for (int i = 0; i < 26; i++) {
                 if (current.children[i] != null) {
@@ -90,7 +84,7 @@ public class DictionaryManagement {
     public static void delete(String word) throws IllegalAccessException {
         Trie.TrieNode node = search(word);
         node.setEndOfWord(false);
-        node.setMeaning("");
+        node.setTarget("");
     }
 
     public static int isExist(String word, String meaning) throws IllegalAccessException {
@@ -101,7 +95,7 @@ public class DictionaryManagement {
             if (!current.endOfWord) {//Nhưng không có nghĩa, node đó không phải kết thúc của từ
                 return 1;
             } else {//Node là kết thúc của từ
-                if ((current.endOfWord) && (meaning != current.meaning)) {//meaning khác với nghĩa của từ đã có
+                if ((current.endOfWord) && (meaning != current.getMeaning())) {//meaning khác với nghĩa của từ đã có
                     return 2;
                 }
                 return 3;//meaning giống với nghĩa đã có của từ
