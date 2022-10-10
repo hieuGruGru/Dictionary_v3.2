@@ -10,10 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -28,6 +28,10 @@ public class mainController {
     ListView<String> listView = new ListView<>();
     @FXML
     TextField SearchText = new TextField();
+    @FXML
+    Label firstLabel;
+    @FXML
+    Label secondLabel;
     @FXML
     TextField EText = new TextField();
     @FXML
@@ -49,10 +53,11 @@ public class mainController {
     @FXML
     Button buttonReset;
 
+    public String srcPath = "";
+    public String desPath = "";
     private Trie newTrie = new Trie();
     private double x, y;
     Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-
 
     public void init(Stage stage, int themeMode, int languageMode) {
         try {
@@ -72,11 +77,18 @@ public class mainController {
             }
 
             if (languageMode == 1) {//E-V
-                DictionaryManagement.insertFromFile("D:/java/Dictionary/Dictionary_v3.2/src/data/1900w_E-V.txt");
+                srcPath = "D:/java/Dictionary/Dictionary_v3.2/src/data/3900w_E-V.txt";
+                DictionaryManagement.insertFromFile(srcPath);
+                firstLabel.setText("Tiếng Anh");
+                secondLabel.setText("Tiếng Việt");
             } else {//V-E
-                DictionaryManagement.insertFromFile("D:/java/Dictionary/Dictionary_v3.2/src/data/1900w_V-E.txt");
+                srcPath = "D:/java/Dictionary/Dictionary_v3.2/src/data/3900w_V-E.txt";
+                DictionaryManagement.insertFromFile(srcPath);
+                firstLabel.setText("Tiếng Việt");
+                secondLabel.setText("Tiếng Anh");
             }
-            DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,DictionaryManagement.dictionary.list1);
+            DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,
+                    DictionaryManagement.dictionary.list1, 1);
             showList(listView, DictionaryManagement.dictionary.list1);
         } catch (IOException | IllegalAccessException e) {
             e.printStackTrace();
@@ -104,13 +116,14 @@ public class mainController {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setIconified(true);
     }
-
     @FXML
     protected void showAllWord(InputEvent inputEvent) {
         DictionaryManagement.dictionary.list1.clear();
         listView.getItems().clear();
-        DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,DictionaryManagement.dictionary.list1);
+        DictionaryManagement.loadToList(DictionaryManagement.dictionary.trie.root,
+                DictionaryManagement.dictionary.list1, 1);
         showList(listView, DictionaryManagement.dictionary.list1);
+        VText.clear();
     }
 
     public void lookUp(ActionEvent event) throws IllegalAccessException {
@@ -119,7 +132,8 @@ public class mainController {
             DictionaryManagement.dictionary.list2.clear();
             String searchString = SearchText.getText();
             Trie.TrieNode node = DictionaryManagement.search(searchString);
-            DictionaryManagement.loadToList(node, DictionaryManagement.dictionary.list2);
+            DictionaryManagement.loadToList(node,
+                    DictionaryManagement.dictionary.list2, 1);
             showList(listView, DictionaryManagement.dictionary.list2);
         }
         EText.clear();
@@ -131,26 +145,41 @@ public class mainController {
         EText.setText(word);
         VText.setText((DictionaryManagement.search(word)).getMeaning()
         );
-        StatusText.clear();
+        SearchText.clear();
     }
 
     public void addWord(ActionEvent event) throws IllegalAccessException {
-        String word = EText.getText();
+        String word =  EText.getText();
         String meaning = VText.getText();
-        if (DictionaryManagement.isExist(word,meaning) == 1) {
-            DictionaryManagement.insert(word, meaning);
-            StatusText.setText("Đã thêm từ mới " + word + " vào từ điển.");
+        if (!word.isEmpty() && !meaning.isEmpty()) {
+            if (DictionaryManagement.isExist(word,meaning) == 0
+                || DictionaryManagement.isExist(word, meaning) == 1) {
+                DictionaryManagement.insert(word, meaning);
+                StatusText.setText("Từ '" + EText.getText() + "' đã được thêm");
+                EText.clear();
+                VText.clear();
+            } else {
+                StatusText.setText("Từ '" + EText.getText() + "' đã tồn tại");
+            }
+        } else {
+            StatusText.setText("Hãy nhập từ mới và nghĩa để thêm");
         }
-        EText.clear();
-        VText.clear();
     }
 
     public void modifyWord(ActionEvent event) throws IllegalAccessException {
-        String word = EText.getText();
-        String meaning = VText.getText();
-        if (DictionaryManagement.isExist(word, meaning) == 2) {
-            DictionaryManagement.insert(word, meaning);
-            StatusText.setText("Đã thêm nghĩa mới của từ " + word + " vào từ điển.");
+        if (listView.getSelectionModel().getSelectedItems().size() != 0) {
+            String word = EText.getText();
+            String meaning = VText.getText();
+            if (DictionaryManagement.isExist(word, meaning) == 2) {
+                DictionaryManagement.insert(word, meaning);
+                StatusText.setText("Đã sửa nghĩa của từ " + word + " thành " + "'" + meaning + "'");
+            } else {
+                if (DictionaryManagement.isExist(word, meaning) == 3) {
+                    StatusText.setText("Nghĩa nó có khác gì đâu mà sửa O_O");
+                }
+            }
+        } else {
+            StatusText.setText("Hãy chọn từ để sửa nghĩa");
         }
     }
 
@@ -170,7 +199,7 @@ public class mainController {
             listView.getItems().remove(index);
             listView.refresh();
             DictionaryManagement.delete(word);
-            StatusText.setText("Đã xóa từ " + word + " khỏi từ điển");
+            StatusText.setText("Đã xóa từ '" + word + "' khỏi từ điển");
             EText.clear();
             VText.clear();
         } else {
@@ -178,7 +207,10 @@ public class mainController {
         }
     }
 
-    public void saveFile(ActionEvent event) throws FileNotFoundException, UnsupportedEncodingException {
+    public void saveFile(ActionEvent event) throws IOException {
+        desPath  = srcPath;
+        DictionaryManagement.exportToFile(desPath);
+        StatusText.setText("Đã lưu các thay đổi vào file");
     }
 
     public void reset(ActionEvent event) {
@@ -188,6 +220,7 @@ public class mainController {
         Parent logout = FXMLLoader.load(getClass().getResource("Option.fxml"));
         stage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(logout);
+        scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.show();
         DictionaryManagement.clear();

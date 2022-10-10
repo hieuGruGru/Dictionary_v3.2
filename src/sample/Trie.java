@@ -27,6 +27,9 @@ public class Trie {
         public String getTarget_Normalize() {
             return target_Normalize;
         }
+        public boolean getEndOfWord() {
+            return endOfWord;
+        }
         public void setMeaning(String meaning) {
             this.meaning = meaning;
         }
@@ -45,6 +48,4 @@ public class Trie {
     public Trie() {
         root = new TrieNode();
     }
-
-
 }

@@ -1,6 +1,8 @@
 package sample;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,7 +10,6 @@ import java.util.Scanner;
 public class DictionaryManagement {
 
     public static Dictionary dictionary = new Dictionary();
-
 
     public static void insert(String target, String meaning) throws IllegalAccessException {
         if (target == null || target.isEmpty()) {
@@ -20,7 +21,7 @@ public class DictionaryManagement {
             int index = target_n.charAt(i) - 'a';
             if (current.children[index] == null) {
                 Trie.TrieNode node = new Trie.TrieNode();
-                String temp = current.target_Normalize;
+                String temp = current.getTarget_Normalize();
                 current.children[index] = node;
                 current = node;
                 current.setTarget_Normalize(temp + target_n.charAt(i));
@@ -33,14 +34,10 @@ public class DictionaryManagement {
         current.setTarget(target);
     }
 
-    public static void modifyWord(String word, String meaning) {
-
-     }
-
     public static void insertFromFile(String path) throws IOException, IllegalAccessException { //Load các cặp từ từ file .txt vào mảng các Word
         File filename = new File(path);
         Scanner sc = new Scanner(filename);
-        while(sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             String currentLine = sc.nextLine();
             int indexOfTab = currentLine.indexOf("\t");
             String word = currentLine.substring(0, indexOfTab);
@@ -67,15 +64,41 @@ public class DictionaryManagement {
         return current;
     }
 
-    public static void loadToList(Trie.TrieNode node, ArrayList list) {
+    public static void exportToFile(String path) throws IOException {
+        dictionary.list1.clear();
+        dictionary.list3.clear();
+        loadToList(dictionary.trie.root, dictionary.list1, 1);
+        loadToList(dictionary.trie.root, dictionary.list3, 3);
+        BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File(path)));
+        for(int i = 0; i < dictionary.list1.size(); i ++) {
+            bWrite.write(dictionary.list1.get(i) + "\t");
+            bWrite.write(dictionary.list3.get(i) + "\n");
+        }
+        bWrite.close();
+    }
+
+    public static void loadToList(Trie.TrieNode node, ArrayList list, int mode) {
         Trie.TrieNode current = node;
-        if (current != null) {
-            if (current.endOfWord) {
-                list.add(current.getTarget());
+        if (mode == 1) {// Lưu target
+            if (current != null) {
+                if (current.getEndOfWord()) {
+                    list.add(current.getTarget());
+                }
+                for (int i = 0; i < 26; i++) {
+                    if (current.children[i] != null) {
+                        loadToList(current.children[i], list, mode);
+                    }
+                }
             }
-            for (int i = 0; i < 26; i++) {
-                if (current.children[i] != null) {
-                    loadToList(current.children[i], list);
+        } else {//Lưu meaning
+            if (current != null) {
+                if (current.getEndOfWord()) {
+                    list.add(current.getMeaning());
+                }
+                for (int i = 0; i < 26; i++) {
+                    if (current.children[i] != null) {
+                        loadToList(current.children[i], list, 2);
+                    }
                 }
             }
         }
@@ -85,22 +108,26 @@ public class DictionaryManagement {
         Trie.TrieNode node = search(word);
         node.setEndOfWord(false);
         node.setTarget("");
+        node.setMeaning("");
     }
 
     public static int isExist(String word, String meaning) throws IllegalAccessException {
-        Trie.TrieNode current = search(word);
+        Trie.TrieNode current = search(Normalize.remove(word));
         if (current == null) { //Chưa có node
             return 0;
         } else { //Đã có các node đó
-            if (!current.endOfWord) {//Nhưng không có nghĩa, node đó không phải kết thúc của từ
+            if (!current.getEndOfWord()) {//Nhưng không có nghĩa, node đó không phải kết thúc của từ
                 return 1;
             } else {//Node là kết thúc của từ
-                if ((current.endOfWord) && (meaning != current.getMeaning())) {//meaning khác với nghĩa của từ đã có
+                if ((current.getEndOfWord()) && (!meaning.equals(current.getMeaning()))) {//meaning khác với nghĩa của từ đã có
                     return 2;
                 }
-                return 3;//meaning giống với nghĩa đã có của từ
+                if ((meaning.equals(current.getMeaning()))) {
+                    return 3;
+                }
             }
         }
+        return -1;
     }
 
     public static void clear() {
